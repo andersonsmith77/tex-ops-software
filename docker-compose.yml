@@ -1,15 +1,15 @@
-version: '3.8'
-
 services:
   db-sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver_db
     environment:
       - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=development162
+      - MSSQL_SA_PASSWORD=DevPassword162!
       - MSSQL_PID=Developer
-    ports:
+
       - "1433:1433"
+    volumes:
+      - ./sqlserver-data:/var/opt/mssql/data
 
   app-spring:
     build: .
@@ -19,6 +19,10 @@ services:
     depends_on:
       - db-sqlserver
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:sqlserver://db-sqlserver:1433;databaseName=employees;encrypt=true;trustServerCertificate=true
+      - SPRING_DATASOURCE_URL=jdbc:sqlserver://db-sqlserver:1433;databaseName=employees;encrypt=true;trustServerCertificate=true;createDatabaseIfNotExist=true
       - SPRING_DATASOURCE_USERNAME=sa
-      - SPRING_DATASOURCE_PASSWORD=development162
+      - SPRING_DATASOURCE_PASSWORD=DevPassword162!
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.SQLServerDialect
+
+volumes:
+  sqlserver-data:
