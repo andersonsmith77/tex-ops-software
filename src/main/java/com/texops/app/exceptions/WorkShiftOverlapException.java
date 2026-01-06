@@ -1,6 +1,5 @@
 package com.texops.app.exceptions;
 
-import com.texops.app.models.WorkShift;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

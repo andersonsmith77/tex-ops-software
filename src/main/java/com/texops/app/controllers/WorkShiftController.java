@@ -24,7 +24,7 @@ public class WorkShiftController {
                 .body(workShiftService.createWorkShift(employeeId, workShift));
     }
 
-    @GetMapping("/employees/{employeesId}")
+    @GetMapping("/employees/{employeeId}")
     public ResponseEntity<List<WorkShift>> getAllWorkShiftsByEmployeeId(@PathVariable("employeeId") Long employeeId) {
         return ResponseEntity.ok(workShiftService.getWorkShiftsByEmployee(employeeId));
     }
