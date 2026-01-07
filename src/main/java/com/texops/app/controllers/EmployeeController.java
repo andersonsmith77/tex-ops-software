@@ -1,5 +1,7 @@
 package com.texops.app.controllers;
 
+import com.texops.app.dto.EmployeeDTO;
+import com.texops.app.dto.mappers.EmployeeDTOMapper;
 import com.texops.app.models.Employee;
 import com.texops.app.services.EmployeeService;
 import jakarta.validation.Valid;
@@ -19,19 +21,19 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<Employee> saveEmployee(@Valid @RequestBody Employee employee) {
+    public ResponseEntity<EmployeeDTO> saveEmployee(@RequestBody Employee employee) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(employeeService.createEmployee(employee));
     }
 
     @GetMapping
-    public ResponseEntity<List<Employee>> getAllEmployees() {
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
         return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @Valid @RequestBody Employee Employee) {
+    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id, @RequestBody Employee Employee) {
         return ResponseEntity.ok(employeeService.updateEmployee(id, Employee));
     }
 

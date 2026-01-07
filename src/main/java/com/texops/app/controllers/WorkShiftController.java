@@ -1,5 +1,6 @@
 package com.texops.app.controllers;
 
+import com.texops.app.dto.WorkShiftDTO;
 import com.texops.app.models.WorkShift;
 import com.texops.app.services.WorkShiftService;
 import org.springframework.http.HttpStatus;
@@ -18,19 +19,19 @@ public class WorkShiftController {
     }
 
     @PostMapping("/employees/{employeeId}")
-    public ResponseEntity<WorkShift> createWorkShift(@PathVariable("employeeId") Long employeeId, @RequestBody WorkShift workShift) {
+    public ResponseEntity<WorkShiftDTO> createWorkShift(@PathVariable("employeeId") Long employeeId, @RequestBody WorkShift workShift) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(workShiftService.createWorkShift(employeeId, workShift));
     }
 
     @GetMapping("/employees/{employeeId}")
-    public ResponseEntity<List<WorkShift>> getAllWorkShiftsByEmployeeId(@PathVariable("employeeId") Long employeeId) {
+    public ResponseEntity<List<WorkShiftDTO>> getAllWorkShiftsByEmployeeId(@PathVariable("employeeId") Long employeeId) {
         return ResponseEntity.ok(workShiftService.getWorkShiftsByEmployee(employeeId));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<WorkShift> updateWorkShift(@PathVariable("id") Long id, @RequestBody WorkShift workShift) {
+    public ResponseEntity<WorkShiftDTO> updateWorkShift(@PathVariable("id") Long id, @RequestBody WorkShift workShift) {
         return ResponseEntity.ok(workShiftService.updateWorkShift(id, workShift));
     }
 
