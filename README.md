@@ -43,8 +43,6 @@ La validación de solapamiento se implementó en la capa de servicio para garant
 
 * Recuperación de datos: Se obtienen todos los turnos previos del empleado desde la base de datos.
 
-* Exclusión por ID: Si el proceso es una actualización, el algoritmo omite la comparación del turno consigo mismo mediante la verificación de sus IDs, permitiendo modificar otros campos sin generar falsos positivos.
-
 * Verificación de solapamiento: Se recorre la lista de turnos existentes comparándolos con el nuevo turno mediante la siguiente condición lógica:
 
 * NuevoTurno.Inicio < Existente.Fin Y Existente.Inicio < NuevoTurno.Fin
@@ -52,24 +50,16 @@ La validación de solapamiento se implementó en la capa de servicio para garant
 * Gestión de excepciones: Si la condición anterior se cumple, se identifica un conflicto de horario y el sistema lanza una WorkShiftOverlapException, cancelando la operación de guardado y protegiendo la integridad de los datos.
 
 ```java
-    Employee employee = employeeService.getEmployee(employeeId);
-
-        workShift.setEmployee(employee);
-
-        List<WorkShift> existingShifts = workShiftRepository.findByEmployeeId(employeeId);
-
-        for (WorkShift existing : existingShifts) {
-
+    public static boolean isWorkShiftOverlaping(WorkShift workShift, List<WorkShift> existingWorkShifts) {
+        for (WorkShift existing : existingWorkShifts) {
         if (workShift.getId() != null && existing.getId().equals(workShift.getId())) {
         continue;
         }
 
-        boolean overlaps = workShift.getStartTime().isBefore(existing.getEndTime()) &&
+        return workShift.getStartTime().isBefore(existing.getEndTime()) &&
         existing.getStartTime().isBefore(workShift.getEndTime());
-
-        if (overlaps) {
-        throw new WorkShiftOverlapException();
         }
+        return false;
         }
 ```
 
@@ -88,7 +78,7 @@ La validación de solapamiento se implementó en la capa de servicio para garant
 
 #### WorkShifts
 
-1. Listar los turnos asignados a un empleado.
+1. Listar los turnos asignados a un empleado. \
    GET http://localhost:8080/api/work_shifts/employees/{employeeId}
 2. Crear un turno. \
    POST http://localhost:8080/api/work_shifts/employees/{employeeId}
